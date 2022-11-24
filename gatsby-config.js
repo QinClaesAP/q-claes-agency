@@ -6,5 +6,14 @@ module.exports = {
     author: "@qinclaes",
     siteUrl: "https://gatsbystarterdefaultsource.gatsbyjs.io/",
   },
-  plugins: ["gatsby-plugin-image", "gatsby-plugin-sharp"],
+  plugins: [
+    "gatsby-plugin-image",
+    "gatsby-plugin-sharp",
+    {
+      resolve: "gatsby-source-wordpress",
+      options: {
+        url: "http://q-claes-agency.local/graphql",
+      },
+    },
+  ],
 }
