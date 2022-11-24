@@ -1,5 +1,6 @@
 import * as React from "react"
 import { graphql } from "gatsby"
+import { GatsbyImage, getImage } from "gatsby-plugin-image"
 import Layout from "../../components/layout"
 
 export const query = graphql`
@@ -16,6 +17,14 @@ export const query = graphql`
         phoneNumber
         shirtSize
         shoeSize
+        profilePicture {
+          localFile {
+            childImageSharp {
+              gatsbyImageData(placeholder: BLURRED)
+            }
+          }
+          altText
+        }
       }
     }
   }
@@ -26,9 +35,11 @@ const ArtistPage = ({
     wpArtist: { artistMeta: artist },
   },
 }) => {
+  const image = getImage(artist.profilePicture.localFile)
   return (
     <Layout pageTitle="Artiesten Template">
       <div>
+        <GatsbyImage image={image} alt={artist.profilePicture.altText} />
         <h3>{artist.artistName}</h3>
         <h1>
           {artist.firstName} {artist.lastName}
