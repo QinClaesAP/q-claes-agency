@@ -1,17 +1,48 @@
 import * as React from "react"
 import Layout from "../components/layout"
 import { graphql } from "gatsby"
-import { StaticImage } from "gatsby-plugin-image"
+import { StaticImage, GatsbyImage, getImage } from "gatsby-plugin-image"
+import {
+  header,
+  headerInfo,
+  headerPicture,
+  headerTitle,
+  CTA,
+} from "../page.module.css"
 
-const IndexPage = ({ data }) => {
-  console.log(data)
+const IndexPage = ({
+  data: {
+    wpPage: { homeFields },
+  },
+}) => {
+  const image = getImage(homeFields.picture.localFile)
+
   return (
-    <Layout pageTitle="Welcome to Q. Claes Agency!">
-      <p>Lorem ipsum</p>
-      <StaticImage
-        alt="Just the two of us"
-        src="../images/QZL2FTi - Imgur.png"
-      />
+    <Layout>
+      <section className={header}>
+        <article className={headerInfo}>
+          <h1 className={headerTitle}>{homeFields.title}</h1>
+          <div
+            dangerouslySetInnerHTML={{
+              __html: homeFields.description,
+            }}
+          />
+          <a
+            className={CTA}
+            target="__blank"
+            href={homeFields.callToAction.url}
+          >
+            {homeFields.callToAction.title}
+          </a>
+        </article>
+        <div>
+          <GatsbyImage
+            image={image}
+            className={headerPicture}
+            alt={homeFields.picture.altText}
+          />
+        </div>
+      </section>
     </Layout>
   )
 }
