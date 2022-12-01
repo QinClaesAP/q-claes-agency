@@ -1,13 +1,17 @@
 import * as React from "react"
 import Layout from "../components/layout"
 import { graphql } from "gatsby"
-import { StaticImage, GatsbyImage, getImage } from "gatsby-plugin-image"
+import { GatsbyImage, getImage } from "gatsby-plugin-image"
+import Artist from "../components/artist"
 import {
   header,
   headerInfo,
   headerPicture,
   headerTitle,
   CTA,
+  section,
+  subtitle,
+  artists,
 } from "../page.module.css"
 
 const IndexPage = ({
@@ -19,28 +23,24 @@ const IndexPage = ({
 
   return (
     <Layout>
-      <section className={header}>
-        <article className={headerInfo}>
-          <h1 className={headerTitle}>{homeFields.title}</h1>
-          <div
-            dangerouslySetInnerHTML={{
-              __html: homeFields.description,
-            }}
-          />
-          <a
-            className={CTA}
-            target="__blank"
-            href={homeFields.callToAction.url}
-          >
-            {homeFields.callToAction.title}
-          </a>
-        </article>
-        <div>
-          <GatsbyImage
-            image={image}
-            className={headerPicture}
-            alt={homeFields.picture.altText}
-          />
+      // Home Page Header JSX
+      <section className={section}>
+        <h2 className={subtitle}>Featured Artists</h2>
+        <p>
+          // description Lorem ipsum dolor sit amet, consectetur adipiscing
+          elit, sed doo eiusmod tempor incididunt ut labore et dolore magna
+          aliqua.
+        </p>
+        <div className={artists}>
+          {homeFields.artists.map(artist => {
+            return (
+              <Artist
+                slug={`artists/${artist.slug}`}
+                key={artist.id}
+                artist={artist}
+              />
+            )
+          })}
         </div>
       </section>
     </Layout>
