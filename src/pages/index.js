@@ -23,7 +23,30 @@ const IndexPage = ({
 
   return (
     <Layout>
-      // Home Page Header JSX
+      <section className={header}>
+        <article className={headerInfo}>
+          <h1 className={headerTitle}>{homeFields.title}</h1>
+          <div
+            dangerouslySetInnerHTML={{
+              __html: homeFields.description,
+            }}
+          />
+          <a
+            className={CTA}
+            target="__blank"
+            href={homeFields.callToAction.url}
+          >
+            {homeFields.callToAction.title}
+          </a>
+        </article>
+        <div>
+          <GatsbyImage
+            image={image}
+            className={headerPicture}
+            alt={homeFields.picture.altText}
+          />
+        </div>
+      </section>
       <section className={section}>
         <h2 className={subtitle}>Featured Artists</h2>
         <p>
