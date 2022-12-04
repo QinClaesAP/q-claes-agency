@@ -1,43 +1,93 @@
 import * as React from "react"
-import { Link, graphql } from "gatsby"
+import { graphql } from "gatsby"
+import { GatsbyImage, getImage } from "gatsby-plugin-image"
 import Layout from "../../components/layout"
+import Artist from "../../components/artist"
+import {
+  hero,
+  section,
+  subtitle,
+  artists,
+  description,
+} from "../../page.module.css"
+
 const ArtistsPage = ({
   data: {
     allWpArtist: { edges },
+    wpPage: { artistsFields },
   },
 }) => {
+  const image = getImage(artistsFields.picture.localFile)
   return (
-    <Layout pageTitle="Artists of Q. Claes Agency">
-      {edges.map(item => {
-        const artist = item.node.artistMeta
-        const slug = item.node.slug
-        return (
-          <Link to={`/artists/${slug}`}>
-            <p key={item.node.id}>
-              {artist.firstName} {artist.lastName}
-            </p>
-          </Link>
-        )
-      })}
+    <Layout pageTitle="Artists of Inghelbrecht Agency">
+      <GatsbyImage
+        className={hero}
+        image={image}
+        alt={artistsFields.picture.altText}
+      />
+      <section className={section}>
+        <h2 className={subtitle}>{artistsFields.title}</h2>
+        <div
+          className={description}
+          dangerouslySetInnerHTML={{
+            __html: artistsFields.description,
+          }}
+        />
+        <div className={artists}>
+          {edges.map(({ node: artist }) => (
+            <Artist key={artist.id} slug={artist.slug} artist={artist} />
+          ))}
+        </div>
+      </section>
     </Layout>
   )
 }
 
 export const query = graphql`
-  {
+  query {
+    wpPage(slug: { eq: "artists" }) {
+      artistsFields {
+        description
+        title
+        picture {
+          localFile {
+            childImageSharp {
+              gatsbyImageData(
+                quality: 100
+                placeholder: BLURRED
+                layout: FULL_WIDTH
+              )
+            }
+          }
+          altText
+        }
+      }
+    }
     allWpArtist {
       edges {
         node {
           artistMeta {
+            artistName
             firstName
             lastName
-            artistName
+            profilePicture {
+              localFile {
+                childImageSharp {
+                  gatsbyImageData(
+                    placeholder: BLURRED
+                    transformOptions: { grayscale: true }
+                  )
+                }
+              }
+              altText
+            }
           }
-          id
           slug
+          id
         }
       }
     }
   }
 `
+
 export default ArtistsPage
